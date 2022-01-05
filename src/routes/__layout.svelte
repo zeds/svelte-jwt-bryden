@@ -3,7 +3,9 @@
     import IconButton, {Icon} from '@smui/icon-button';
     import { mdiMenu } from '@mdi/js';
     import { Svg } from '@smui/common/elements';
+    import List, { Item, Separator, Text } from '@smui/list';
 
+    let clicked = 'nothing yet';
     
 </script>
 
@@ -31,7 +33,20 @@
     </nav>
 
 
+
 </div>
+
+<div>
+  <List class="demo-list">
+    <Item on:SMUI:action={() => (clicked = 'Cut')}><Text>Cut</Text></Item>
+    <Item on:SMUI:action={() => (clicked = 'Copy')}><Text>Copy</Text></Item>
+    <Item on:SMUI:action={() => (clicked = 'Paste')}><Text>Paste</Text></Item>
+    <Separator />
+    <Item on:SMUI:action={() => (clicked = 'Delete')}><Text>Delete</Text></Item>
+  </List>
+</div>
+ 
+<pre class="status">Clicked: {clicked}</pre>    
 
 
 
