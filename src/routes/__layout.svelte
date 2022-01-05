@@ -4,6 +4,7 @@
     import { mdiMenu } from '@mdi/js';
     import { Svg } from '@smui/common/elements';
     import List, { Item, Separator, Text } from '@smui/list';
+    import Button from '@smui/button'
 
     let clicked = 'nothing yet';
     
@@ -31,6 +32,9 @@
         <a href="/profile">Profile</a>
         
     </nav>
+
+    <Button on:click={() => alert('It worked')}>Click Me!</Button>
+
 
 
 
