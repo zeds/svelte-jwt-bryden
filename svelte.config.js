@@ -3,10 +3,15 @@ import adapter from '@sveltejs/adapter-auto';
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
 	kit: {
-		adapter: adapter(),
-
+		adapter: adapter(),vercel(),
 		// hydrate the <div id="svelte"> element in src/app.html
-		target: '#svelte'
+		target: '#svelte',
+
+    vite: {
+      ssr: {
+        noExternal: [/^@material\//, /^@smui(?:-extra)?\//],
+      }
+    }
 	}
 };
 
