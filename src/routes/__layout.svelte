@@ -1,117 +1,104 @@
-<script land="ts">
-    import { onMount } from 'svelte';
-    import IconButton, {Icon} from '@smui/icon-button';
-    import { mdiMenu } from '@mdi/js';
-    import { Svg } from '@smui/common/elements';
-    import List, { Item, Separator, Text } from '@smui/list';
-    import Button from '@smui/button'
+<script>
+  import {
+    AppBar,
+    Button,
+    List,
+    ListItem,
+    Icon,
+    NavigationDrawer,
+    Overlay,
+    MaterialApp } from 'svelte-materialify';
+  import { mdiMenu,mdiPen,mdiViewDashboard,mdiAccountBox,mdiGavel } from '@mdi/js';
+  // import Button from '@smui/button'
+  // import List, { Item, Graphic, Separator, Text, Subheader } from '@smui/list';
+  import { Item, Graphic, Separator, Text, Subheader } from '@smui/list';
+  import { H6 } from '@smui/common/elements';
+  import { goto } from '$app/navigation';
 
-    let clicked = 'nothing yet';
-    
+  let active = false;
+  function toggleNavigation() {
+    active = !active;
+  }
+
+  function handleClick(path) {
+    goto(`/${path}`)
+    active = !active;
+  }
+
 </script>
 
-<svelte:head>
-  <!-- SMUI Styles -->
-  <link rel="stylesheet" href="/smui.css" media="(prefers-color-scheme: light)" />
-  <link rel="stylesheet" href="/smui-dark.css" media="screen and (prefers-color-scheme: dark)" />
-
-</svelte:head>
-
-
-<div style="display: flex; align-items: center;">
-
-    <IconButton>
-        <Icon component={Svg} viewBox="0 0 24 24">
-            <path fill="currentColor" d={mdiMenu} />
-        </Icon>
-    </IconButton>
-
-    <nav>
-        <a href="/">Home</a>
-        <a href="/login">Login</a>
-        <a href="/profile">Profile</a>
-        
-    </nav>
-
-    <Button on:click={() => alert('It worked')}>Click Me!</Button>
-
-
-
-
+<MaterialApp>
+<div style="position:relative;height:52px">
+  <AppBar>
+    <div slot="icon">
+      <Button fab depressed on:click={toggleNavigation}>
+        <Icon path={mdiMenu} />
+      </Button>
+    </div>
+    <span slot="title"> GIOTA </span>
+  </AppBar>
+  <!-- <NavigationDrawer style="position: relative" class="primary-color theme--dark" {active}> -->
+  <NavigationDrawer absolute {active} style="height: 500px">
+    <div class="drawer-container">
+      <List>
+        <ListItem on:click={() => handleClick('')}>
+          <span slot="prepend">
+            <Icon path={mdiViewDashboard} />
+          </span>
+          Home
+        </ListItem>
+        <ListItem on:click={() => handleClick('profile')}>
+          <span slot="prepend">
+            <Icon path={mdiAccountBox} />
+          </span>
+          Profile
+        </ListItem>
+        <ListItem on:click={() => handleClick('admin')}>
+          <span slot="prepend">
+            <Icon path={mdiGavel} />
+          </span>
+          Admin
+        </ListItem>
+        <ListItem on:click={() => handleClick('admin')}>
+          <span slot="prepend">
+            <Icon path={mdiGavel} />
+          </span>
+          Admin
+        </ListItem>
+        <ListItem on:click={() => handleClick('admin')}>
+          <span slot="prepend">
+            <Icon path={mdiGavel} />
+          </span>
+          Admin
+        </ListItem>
+      </List>
+    </div>
+  </NavigationDrawer>
+  <Overlay {active} absolute on:click={toggleNavigation} index={1} />
 </div>
-
-<div>
-  <List class="demo-list">
-    <Item on:SMUI:action={() => (clicked = 'Cut')}><Text>Cut</Text></Item>
-    <Item on:SMUI:action={() => (clicked = 'Copy')}><Text>Copy</Text></Item>
-    <Item on:SMUI:action={() => (clicked = 'Paste')}><Text>Paste</Text></Item>
-    <Separator />
-    <Item on:SMUI:action={() => (clicked = 'Delete')}><Text>Delete</Text></Item>
-  </List>
-</div>
- 
-<pre class="status">Clicked: {clicked}</pre>    
-
-
+</MaterialApp>
 
 <slot />
 
 <style>
-	:global(body) {
-		overflow: hidden;
-	}
+  /* These classes are only needed because the
+    drawer is in a container on the page. */
+  .drawer-container {
+    margin-top: 50px;
+    position: relative;
+    display: flex;
+    max-width: 600px;
+    border: 1px solid
+      var(--mdc-theme-text-hint-on-background, rgba(0, 0, 0, 0.1));
+    overflow: hidden;
+    z-index: 0;
+  }
 
-	span {
-		position: absolute;
-		font-size: 5vw;
-		user-select: none;
-	}
+  * :global(.app-content) {
+    flex: auto;
+    overflow: auto;
+    position: relative;
+    flex-grow: 1;
+  }
+ 
 </style>
-
-<!-- <TopAppBar bind:this={topAppBar} variant="standard">
-    <Row>
-      <Section>
-        <IconButton class="material-icons">menu</IconButton>
-        <Title>Standard</Title>
-      </Section>
-      <Section align="end" toolbar>
-        <IconButton class="material-icons" aria-label="Download"
-          >file_download</IconButton
-        >
-        <IconButton class="material-icons" aria-label="Print this page"
-          >print</IconButton
-        >
-        <IconButton class="material-icons" aria-label="Bookmark this page"
-          >bookmark</IconButton
-        >
-      </Section>
-    </Row>
-  </TopAppBar>
-  <AutoAdjust {topAppBar}>
-    <slot />
-  </AutoAdjust>
-   
-  <script lang="ts">
-    // import TopAppBar, {
-    //   Row,
-    //   Section,
-    //   Title,
-    //   AutoAdjust,
-    //   TopAppBarComponentDev,
-    // } from '@smui/top-app-bar';
-    // import IconButton from '@smui/icon-button';
-   
-    // let topAppBar: TopAppBarComponentDev;
-  </script>
-   
-  <style>
-    /* Hide everything above this component. */
-    :global(app),
-    :global(body),
-    :global(html) {
-      display: block !important;
-      height: auto !important;
-      width: auto !important;
-      position: static !important;
-    }
-  </style> -->
