@@ -10,6 +10,9 @@ const config = {
 		target: '#svelte',
 
     vite: {
+      build: {
+        minify: false
+      },
       ssr: {
         noExternal: [/^@material\//, /^@smui(?:-extra)?\//],
       }
