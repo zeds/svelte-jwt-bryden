@@ -15,6 +15,7 @@
   import { H6 } from '@smui/common/elements';
   import { goto } from '$app/navigation';
   import Sidebar from '../components/Sidebar.svelte';
+  import ChooseLanguage from '../components/ChooseLanguage.svelte';
   let active = false;
   let activeRight = false;
   function toggleNavigation() {
@@ -39,6 +40,9 @@
       </Button>
     </div>
     <span slot="title"> GIOTA </span>
+    <div class="choose-lang-menu">
+      <ChooseLanguage />
+    </div>
     <div class="sidebar-menu-right">
       <Button fab depressed on:click={toggleNavigationRight}>
         <Icon path={mdiMenu} />
@@ -110,6 +114,10 @@
     flex-grow: 1;
   }
   .sidebar-menu-right {
+    margin-left: 0px;
+    margin-right: 20px;
+  }
+  .choose-lang-menu {
     margin-left: auto;
     margin-right: 0px;
   }
