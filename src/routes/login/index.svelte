@@ -1,5 +1,7 @@
-<script>
+<script lang="ts">
     import { post, browserSet } from '$lib/req_utils'
+		import Button from '@smui/button'
+
 
     let username
     let password
@@ -20,6 +22,10 @@
     <input type="password" bind:value={password} name="password" placeholder="Enter your password" />
 
     <button on:click={handleLogin}>Login</button>
+
+		<Button on:click={() => alert('It worked')}>Click Me!</Button>
+		<Button on:click={() => alert('It worked')} color="secondary">Click Me!</Button>
+		
 </div>
 
 <style>
