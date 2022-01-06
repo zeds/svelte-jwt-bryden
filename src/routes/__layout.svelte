@@ -14,8 +14,9 @@
   import { Item, Graphic, Separator, Text, Subheader } from '@smui/list';
   import { H6 } from '@smui/common/elements';
   import { goto } from '$app/navigation';
-
+  import Sidebar from '../components/Sidebar.svelte';
   let active = false;
+  let activeRight = false;
   function toggleNavigation() {
     active = !active;
   }
@@ -24,7 +25,9 @@
     goto(`/${path}`)
     active = !active;
   }
-
+  function toggleNavigationRight() {
+    activeRight = !activeRight;
+  }
 </script>
 
 <MaterialApp>
@@ -36,6 +39,11 @@
       </Button>
     </div>
     <span slot="title"> GIOTA </span>
+    <div class="sidebar-menu-right">
+      <Button fab depressed on:click={toggleNavigationRight}>
+        <Icon path={mdiMenu} />
+      </Button>
+    </div>
   </AppBar>
   <!-- <NavigationDrawer style="position: relative" class="primary-color theme--dark" {active}> -->
   <NavigationDrawer absolute {active} style="height: 500px">
@@ -65,17 +73,18 @@
           </span>
           Admin
         </ListItem>
-        <ListItem on:click={() => handleClick('admin')}>
+        <ListItem on:click={() => handleClick('about')}>
           <span slot="prepend">
             <Icon path={mdiGavel} />
           </span>
-          Admin
+          About
         </ListItem>
       </List>
     </div>
   </NavigationDrawer>
   <Overlay {active} absolute on:click={toggleNavigation} index={1} />
 </div>
+<Sidebar bind:active={activeRight} />
 </MaterialApp>
 
 <slot />
@@ -100,5 +109,8 @@
     position: relative;
     flex-grow: 1;
   }
- 
+  .sidebar-menu-right {
+    margin-left: auto;
+    margin-right: 0px;
+  }
 </style>
