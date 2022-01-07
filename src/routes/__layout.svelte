@@ -8,7 +8,7 @@
     NavigationDrawer,
     Overlay,
     MaterialApp } from 'svelte-materialify';
-  import { mdiMenu,mdiPen,mdiViewDashboard,mdiAccountBox,mdiGavel } from '@mdi/js';
+  import { mdiMenu,mdiPen,mdiViewDashboard,mdiAccountBox,mdiGavel,mdiLogin } from '@mdi/js';
   // import Button from '@smui/button'
   // import List, { Item, Graphic, Separator, Text, Subheader } from '@smui/list';
   import { Item, Graphic, Separator, Text, Subheader } from '@smui/list';
@@ -46,6 +46,12 @@
             <Icon path={mdiViewDashboard} />
           </span>
           Home
+        </ListItem>
+        <ListItem on:click={() => handleClick('login')}>
+          <span slot="prepend">
+            <Icon path={mdiLogin} />
+          </span>
+          Login
         </ListItem>
         <ListItem on:click={() => handleClick('profile')}>
           <span slot="prepend">
