@@ -84,7 +84,9 @@
 </div>
 </MaterialApp>
 
-<slot />
+<div class="wrapper">
+	<slot />
+</div>
 
 <style>
   /* These classes are only needed because the

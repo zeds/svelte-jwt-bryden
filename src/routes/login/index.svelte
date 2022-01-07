@@ -1,5 +1,7 @@
 <script>
     import { post, browserSet } from '$lib/req_utils'
+		import Login from '/src/components/Login.svelte'
+
 
     let username
     let password
@@ -15,12 +17,15 @@
     }
 </script>
 
-<div>
+
+<Login />
+
+<!--<div class="container">
     <input type="text" bind:value={username} name="emausername" placeholder="Enter your username" />
     <input type="password" bind:value={password} name="password" placeholder="Enter your password" />
 
     <button on:click={handleLogin}>Login</button>
-</div>
+</div>-->
 
 <style>
     div {
