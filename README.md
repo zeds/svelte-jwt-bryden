@@ -14,5 +14,14 @@ You can register new user<br/>
 <br/>
 front<br/>
 http://localhost:3000<br/>
+<br/>
+Deploy to vercel<br/>
+rm -rf .svelte-kit<br/>
+rm -rf node_modules<br/>
+npm install<br/>
+npm run prepare<br/>
+npm run build<br/>
+
+
 
 
