@@ -2,15 +2,12 @@
 <script>
     import { fly } from 'svelte/transition';
     import {
-        AppBar,
         Button,
         List,
         ListItem,
         Icon,
-        NavigationDrawer,
-        Overlay,
-        MaterialApp } from 'svelte-materialify';
-    import { mdiMenu,mdiPen,mdiViewDashboard,mdiAccountBox,mdiGavel } from '@mdi/js';
+        Overlay} from 'svelte-materialify';
+    import { mdiViewDashboard,mdiAccountBox,mdiGavel } from '@mdi/js';
     import { goto } from '$app/navigation';
     export let active = false;
     function toggleNavigation() {
