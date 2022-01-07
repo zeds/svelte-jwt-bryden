@@ -1,14 +1,14 @@
 <script>
     import { Menu, Button, List, ListItem } from 'svelte-materialify';
-    export let langSelected = "jp";
+    export let langSelected = "ja";
     let langIcon = "/lang/jp.svg";
     const langs = [
         {
-            code: "jp",
+            code: "ja",
             icon: "/lang/jp.svg"
         },
         {
-            code: "vn",
+            code: "vi",
             icon: "/lang/vn.svg"
         },
         {
@@ -27,7 +27,7 @@
           <Button tile size="small"><img class="choose-lang-item-img" src="{langIcon}" alt="" /></Button>
         </div>
         <List dense>
-          <ListItem on:click={() => handleClick("jp")}>
+          <ListItem on:click={() => handleClick("ja")}>
               <div slot="prepend" class="lang-item-img">
               <img class="choose-lang-item-img" src="/lang/jp.svg" alt="" />
             </div>
@@ -35,7 +35,7 @@
             日本語
         </div>
             </ListItem>
-          <ListItem on:click={() => handleClick("vn")}>
+          <ListItem on:click={() => handleClick("vi")}>
               <div slot="prepend" class="lang-item-img">
               <img class="choose-lang-item-img" src="/lang/vn.svg" alt="" />
             </div>
