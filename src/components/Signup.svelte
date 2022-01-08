@@ -1,49 +1,87 @@
 <!--https://www.youtube.com/watch?v=3GsKEtBcGTk-->
 <script>
-	import { goto } from '$app/navigation'
-	import { createForm } from 'svelte-forms-lib'
+	import { goto } from '$app/navigation';
+	import Button from '@smui/button'
 
+	let fields = { email: '', password: '' }
+	//なにも表示しない状態から、エラーを表示すると、みずらいのでスペースを挿入した
+	let errors = { email: '', password: '' }
+	let valid = false
 
-//form__input--errorをinputのclassに設定すると赤枠が表示されます
+	//メールアドレス
+	const regex = /^[a-zA-Z0-9_.+-]+@([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]*\.)+[a-zA-Z]{2,}$/;
+
+	//form__input--errorをinputのclassに設定すると赤枠が表示されます
+
+	//clicked login button
+	const submitHandler = () => {
+		valid = true
+		// emailは正しいフォーマットか？
+		if(!regex.test(fields.email)){
+			valid = false
+			errors.email = 'emailが正しくありません'
+		}else{
+			errors.email = ''
+		}
+
+		// passwordは6文字以上か？
+		if(fields.password.trim().length < 6){
+			valid = false
+			errors.password = 'パスワードは6文字以上'
+		}else{
+			errors.password = ''
+		}
+
+		if(valid){
+			console.log('valid=')
+			async function handleLogin() {
+        const json = await post(fetch, 'http://localhost:1337/api/auth/local', {
+            identifier: username,
+            password
+        })
+        if(json.jwt) {
+					console.log(json.jwt)
+					browserSet("jwt", json.jwt)
+        }
+    	}
+		}
+	}
 
 
 
 </script>
 
-
 <div class="container">
-	<form class='form' id="createAccount">
-			<h3 class="form__title">Create Account</h3>
-			<div class="form__message form__message--error"></div>
-			<div class="form__input-group">
-					<input type="text" id="signupUsername" class="form__input" autofocus placeholder="Username">
-					<div class="form__input-error-message"></div>
-			</div>
-			<div class="form__input-group">
-					<input type="text" class="form__input" autofocus placeholder="Email Address">
-					<div class="form__input-error-message"></div>
-			</div>
-			<div class="form__input-group">
-					<input type="password" class="form__input" autofocus placeholder="Password">
-					<div class="form__input-error-message"></div>
-			</div>
-			<div class="form__input-group">
-					<input type="password" class="form__input" autofocus placeholder="Confirm password">
-					<div class="form__input-error-message"></div>
-			</div>
-			<button class="form__button" type="submit">Continue</button>
-			<p>
-				<a href="/login">Already have account?</a>
-			</p>
+
+	<form on:submit|preventDefault={submitHandler}>
+		<h3 class="form__title">Signup</h3>
+		<div class="form__message form__message--error"></div>
+
+		<!--email-->
+		<div class="form__input-group">
+				<input type="text" class="form__input" id="email" autofocus placeholder="Username or email" bind:value={fields.email}>
+				<div class="error">{ errors.email }</div>
+		</div>
+
+		<!--password-->
+		<div class="form__input-group">
+				<input type="password" class="form__input" id="password" placeholder="Password" bind:value={fields.password}>
+				<div class="error">{ errors.password }</div>
+		</div>
+		<Button variant="unelevated" style="width:100%">Signup</Button>
+
+		<p class="form__text">
+				<a href="#" class="form__link">Forgot your password?</a>
+		</p>
+		<p>
+			<a href="/login">You have account? login</a>
+		</p>
+
 	</form>
 </div>
 
 
 <style>
-
-p{
-	margin-top: 20px;
-}
 
 .container {
 		--color-primary: #009579;
@@ -64,8 +102,7 @@ p{
 
 
 .container,
-.form__input,
-.form__button {
+.form__input {
     font: 500 1rem 'Quicksand', sans-serif;
 }
 
@@ -91,14 +128,6 @@ p{
     margin-bottom: 1rem;
 }
 
-.form__message--success {
-    color: var(--color-success);
-}
-
-.form__message--error {
-    color: var(--color-error);
-}
-
 .form__input-group {
     margin-bottom: 1rem;
 }
@@ -120,38 +149,6 @@ p{
     background: #ffffff;
 }
 
-.form__input--error {
-    color: var(--color-error);
-    border-color: var(--color-error);
-}
-
-.form__input-error-message {
-    margin-top: 0.5rem;
-    font-size: 0.85rem;
-    color: var(--color-error);
-}
-
-.form__button {
-    width: 100%;
-    padding: 1rem 2rem;
-    font-weight: bold;
-    font-size: 1.1rem;
-    color: #ffffff;
-    border: none;
-    border-radius: var(--border-radius);
-    outline: none;
-    cursor: pointer;
-    background: var(--color-primary);
-}
-
-.form__button:hover {
-    background: var(--color-primary-dark);
-}
-
-.form__button:active {
-    transform: scale(0.98);
-}
-
 .form__text {
     text-align: center;
 }
@@ -165,6 +162,12 @@ p{
 .form__link:hover {
     text-decoration: underline;
 }
+
+/*.error{
+	font-weight: bold;
+	font-size: 12px;
+	color: #d91b42;
+}*/
 
 </style>
 

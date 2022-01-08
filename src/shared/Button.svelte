@@ -4,26 +4,32 @@
   export let inverse = false;
 </script>
 
-<button class:flat={flat} class:inverse={inverse} class={type} on:click>
-  <slot></slot>
+<!--<button class:flat={flat} class:inverse={inverse} class={type} on:click>-->
+<button class:flat={flat} class:inverse={inverse} class="form__button" on:click>
+		<slot></slot>
 </button>
 
 <style>
-  button{
-		width: 100%;
-    border: 0;
-    cursor: pointer;
-    border-radius: 6px;
-    padding: 8px 12px;
+	.form__button {
+		font: 500 1rem 'Quicksand', sans-serif;
+    width: 100%;
+    padding: 1rem 2rem;
     font-weight: bold;
-    box-shadow: 1px 2px 3px rgba(0,0,0,0.2);
-  }
-	button:hover {
-		background: #45c496;
-		color: black;
+    font-size: 1.1rem;
+    color: #ffffff;
+    border: none;
+    border-radius: var(--border-radius);
+    outline: none;
+    cursor: pointer;
+    background: var(--color-primary);
 	}
-	button:active {
-		transform: scale(0.9);
+
+	.form__button:hover {
+			background: var(--color-primary-dark);
+	}
+
+	.form__button:active {
+			transform: scale(0.98);
 	}
   .flat{
     box-shadow: none;

@@ -13,6 +13,7 @@
 
 	//form__input--errorをinputのclassに設定すると赤枠が表示されます
 
+	//clicked login button
 	const submitHandler = () => {
 		valid = true
 		// emailは正しいフォーマットか？
@@ -30,7 +31,23 @@
 		}else{
 			errors.password = ''
 		}
+
+		if(valid){
+			console.log('valid=')
+			async function handleLogin() {
+        const json = await post(fetch, 'http://localhost:1337/api/auth/local', {
+            identifier: username,
+            password
+        })
+        if(json.jwt) {
+					console.log(json.jwt)
+					browserSet("jwt", json.jwt)
+        }
+    	}
+		}
 	}
+
+
 
 </script>
 
@@ -85,8 +102,7 @@
 
 
 .container,
-.form__input,
-.form__button {
+.form__input {
     font: 500 1rem 'Quicksand', sans-serif;
 }
 
@@ -133,28 +149,6 @@
     background: #ffffff;
 }
 
-
-.form__button {
-    width: 100%;
-    padding: 1rem 2rem;
-    font-weight: bold;
-    font-size: 1.1rem;
-    color: #ffffff;
-    border: none;
-    border-radius: var(--border-radius);
-    outline: none;
-    cursor: pointer;
-    background: var(--color-primary);
-}
-
-.form__button:hover {
-    background: var(--color-primary-dark);
-}
-
-.form__button:active {
-    transform: scale(0.98);
-}
-
 .form__text {
     text-align: center;
 }
@@ -169,11 +163,11 @@
     text-decoration: underline;
 }
 
-.error{
+/*.error{
 	font-weight: bold;
 	font-size: 12px;
 	color: #d91b42;
-}
+}*/
 
 </style>
 

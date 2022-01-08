@@ -15,3 +15,19 @@
 	/*background: url(./background.jpg);*/
 	background-size: cover;
 }
+
+
+/*error text in the form*/
+.error{
+	font-weight: bold;
+	font-size: 12px;
+	color: #d91b42;
+}
+
+
+
+
+
+
+
+/*end*/
