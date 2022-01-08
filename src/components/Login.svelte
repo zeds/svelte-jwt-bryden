@@ -1,74 +1,79 @@
+<!--https://www.youtube.com/watch?v=3GsKEtBcGTk-->
 <script>
-  import Button from '@smui/button'
+	import { goto } from '$app/navigation';
+	import Button from '../shared/Button.svelte';
 
-	let logginForm = true
+	let fields = { email: '', password: '' }
+	//なにも表示しない状態から、エラーを表示すると、みずらいのでスペースを挿入した
+	let errors = { email: '', password: '' }
+	let valid = false
 
-	function toggle() {
-		logginForm = !logginForm
-  }
+	//メールアドレス
+	const regex = /^[a-zA-Z0-9_.+-]+@([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]*\.)+[a-zA-Z]{2,}$/;
 
+	//form__input--errorをinputのclassに設定すると赤枠が表示されます
+
+	const submitHandler = () => {
+		valid = true
+		// emailは正しいフォーマットか？
+		if(!regex.test(fields.email)){
+			valid = false
+			errors.email = 'emailが正しくありません'
+		}else{
+			errors.email = ''
+		}
+
+		// passwordは6文字以上か？
+		if(fields.password.trim().length < 6){
+			valid = false
+			errors.password = 'パスワードは6文字以上'
+		}else{
+			errors.password = ''
+		}
+	}
 
 </script>
 
 <div class="container">
-	{#if logginForm}
-		<form class="form" id="login">
-				<h3 class="form__title">Login</h3>
-				<div class="form__message form__message--error"></div>
-				<div class="form__input-group">
-						<input type="text" class="form__input" autofocus placeholder="Username or email">
-						<div class="form__input-error-message"></div>
-				</div>
-				<div class="form__input-group">
-						<input type="password" class="form__input" autofocus placeholder="Password">
-						<div class="form__input-error-message"></div>
-				</div>
-				<Button variant="outlined" type="submit">Continue</Button>
-				<p class="form__text">
-						<a href="#" class="form__link">Forgot your password?</a>
-				</p>
-				<button on:click|once={toggle}>
-					Not have account?
-				</button>
-		</form>
-	{:else}
-	<form class='form' id="createAccount">
-			<h3 class="form__title">Create Account</h3>
-			<div class="form__message form__message--error"></div>
-			<div class="form__input-group">
-					<input type="text" id="signupUsername" class="form__input" autofocus placeholder="Username">
-					<div class="form__input-error-message"></div>
-			</div>
-			<div class="form__input-group">
-					<input type="text" class="form__input" autofocus placeholder="Email Address">
-					<div class="form__input-error-message"></div>
-			</div>
-			<div class="form__input-group">
-					<input type="password" class="form__input" autofocus placeholder="Password">
-					<div class="form__input-error-message"></div>
-			</div>
-			<div class="form__input-group">
-					<input type="password" class="form__input" autofocus placeholder="Confirm password">
-					<div class="form__input-error-message"></div>
-			</div>
-			<button class="form__button" type="submit">Continue</button>
-			<p>
-				<button on:click|once={toggle}>
-					Already have account?
-				</button>
-			</p>
-</form>
-	{/if}
+
+	<form on:submit|preventDefault={submitHandler}>
+		<h3 class="form__title">Login</h3>
+		<div class="form__message form__message--error"></div>
+
+		<!--email-->
+		<div class="form__input-group">
+				<input type="text" class="form__input" id="email" autofocus placeholder="Username or email" bind:value={fields.email}>
+				<div class="error">{ errors.email }</div>
+		</div>
+
+		<!--password-->
+		<div class="form__input-group">
+				<input type="password" class="form__input" id="password" placeholder="Password" bind:value={fields.password}>
+				<div class="error">{ errors.password }</div>
+		</div>
+		<Button type="primary" >Login</Button>
+
+		<p class="form__text">
+				<a href="#" class="form__link">Forgot your password?</a>
+		</p>
+		<p>
+			<a href="/signup">Don't have an account? Create account</a>
+		</p>
+
+	</form>
 </div>
 
 
 <style>
 
-p{
-	margin-top: 20px;
-}
-
 .container {
+		--color-primary: #009579;
+    --color-primary-dark: #007f67;
+    --color-secondary: #252c6a;
+    --color-error: #cc3333;
+    --color-success: #4bb544;
+    --border-radius: 4px;
+
     width: 400px;
     max-width: 400px;
     margin: 1rem;
@@ -107,14 +112,6 @@ p{
     margin-bottom: 1rem;
 }
 
-.form__message--success {
-    color: var(--color-success);
-}
-
-.form__message--error {
-    color: var(--color-error);
-}
-
 .form__input-group {
     margin-bottom: 1rem;
 }
@@ -136,16 +133,6 @@ p{
     background: #ffffff;
 }
 
-.form__input--error {
-    color: var(--color-error);
-    border-color: var(--color-error);
-}
-
-.form__input-error-message {
-    margin-top: 0.5rem;
-    font-size: 0.85rem;
-    color: var(--color-error);
-}
 
 .form__button {
     width: 100%;
@@ -180,6 +167,12 @@ p{
 
 .form__link:hover {
     text-decoration: underline;
+}
+
+.error{
+	font-weight: bold;
+	font-size: 12px;
+	color: #d91b42;
 }
 
 </style>
