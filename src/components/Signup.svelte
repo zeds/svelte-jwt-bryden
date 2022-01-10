@@ -16,6 +16,7 @@
 	//clicked login button
 	const submitHandler = () => {
 		valid = true
+		console.log('valid1=',valid)
 		// emailは正しいフォーマットか？
 		if(!regex.test(fields.email)){
 			valid = false
@@ -33,10 +34,10 @@
 		}
 
 		if(valid){
-			console.log('valid=')
+			console.log('valid=',valid)
 			async function handleLogin() {
         const json = await post(fetch, 'http://localhost:1337/api/auth/local', {
-            identifier: username,
+            identifier: email,
             password
         })
         if(json.jwt) {

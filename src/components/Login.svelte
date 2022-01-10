@@ -1,11 +1,13 @@
 <!--https://www.youtube.com/watch?v=3GsKEtBcGTk-->
 <script>
+	import { post, browserSet } from '$lib/req_utils'
 	import { goto } from '$app/navigation';
 	import Button from '../shared/Button.svelte';
 
 	let fields = { email: '', password: '' }
 	//なにも表示しない状態から、エラーを表示すると、みずらいのでスペースを挿入した
 	let errors = { email: '', password: '' }
+	let not_found = 'email, passwordを入力してください'
 	let valid = false
 
 	//メールアドレス
@@ -13,9 +15,30 @@
 
 	//form__input--errorをinputのclassに設定すると赤枠が表示されます
 
+
+	async function handleLogin() {
+		const json = await post(fetch, 'http://localhost:1337/api/auth/local', {
+				identifier: fields.email,
+				password: fields.password
+		})
+		
+		try {
+			//以下のjson.jwtの評価はエラーになることがある。
+			//try catchでエラーを捕まえる
+			if(json.jwt) {
+				console.log(json.jwt)
+				browserSet("jwt", json.jwt)
+				goto('/profile')
+			}
+		} catch {
+			not_found = 'emailまたはパスワードが間違っています'
+		}
+  }
+
 	//clicked login button
 	const submitHandler = () => {
 		valid = true
+		console.log('valid-1=',valid)
 		// emailは正しいフォーマットか？
 		if(!regex.test(fields.email)){
 			valid = false
@@ -33,29 +56,18 @@
 		}
 
 		if(valid){
-			console.log('valid=')
-			async function handleLogin() {
-        const json = await post(fetch, 'http://localhost:1337/api/auth/local', {
-            identifier: username,
-            password
-        })
-        if(json.jwt) {
-					console.log(json.jwt)
-					browserSet("jwt", json.jwt)
-        }
-    	}
+			handleLogin()
 		}
 	}
-
-
-
 </script>
 
 <div class="container">
 
 	<form on:submit|preventDefault={submitHandler}>
+
 		<h3 class="form__title">Login</h3>
-		<div class="form__message form__message--error"></div>
+		
+		<p class="error">{not_found}</p>
 
 		<!--email-->
 		<div class="form__input-group">

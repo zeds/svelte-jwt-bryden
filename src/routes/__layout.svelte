@@ -59,11 +59,11 @@
           </span>
           Profile
         </ListItem>
-        <ListItem on:click={() => handleClick('admin')}>
+        <ListItem on:click={() => handleClick('contact')}>
           <span slot="prepend">
             <Icon path={mdiGavel} />
           </span>
-          Admin
+          Contact
         </ListItem>
         <ListItem on:click={() => handleClick('admin')}>
           <span slot="prepend">
