@@ -15,8 +15,24 @@
         email = json.email
     })
 
-</script>>
+</script>
 
-<h2>name:{name}</h2>
-<h2>email:{email}</h2>
+<div class="container">
+	
+	
+	<form>
+		<h2>name:{name}</h2>
+		<h2>email:{email}</h2>
+	</form>
+</div>
+
+<style>
+.container{
+	width: 100vw;
+	height: 100vh;
+	background-color: #dddddd;
+}
+
+</style>
+
 

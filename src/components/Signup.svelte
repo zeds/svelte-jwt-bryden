@@ -1,13 +1,11 @@
 <!--https://www.youtube.com/watch?v=3GsKEtBcGTk-->
 <script>
-	import { post, browserSet } from '$lib/req_utils'
 	import { goto } from '$app/navigation';
-	import Button from '../shared/Button.svelte';
+	import Button from '@smui/button'
 
 	let fields = { email: '', password: '' }
 	//なにも表示しない状態から、エラーを表示すると、みずらいのでスペースを挿入した
 	let errors = { email: '', password: '' }
-	let not_found = 'email, passwordを入力してください'
 	let valid = false
 
 	//メールアドレス
@@ -15,30 +13,10 @@
 
 	//form__input--errorをinputのclassに設定すると赤枠が表示されます
 
-
-	async function handleLogin() {
-		const json = await post(fetch, 'http://localhost:1337/api/auth/local', {
-				identifier: fields.email,
-				password: fields.password
-		})
-		
-		try {
-			//以下のjson.jwtの評価はエラーになることがある。
-			//try catchでエラーを捕まえる
-			if(json.jwt) {
-				console.log(json.jwt)
-				browserSet("jwt", json.jwt)
-				goto('/profile')
-			}
-		} catch {
-			not_found = 'emailまたはパスワードが間違っています'
-		}
-  }
-
 	//clicked login button
 	const submitHandler = () => {
 		valid = true
-		console.log('valid-1=',valid)
+		console.log('valid1=',valid)
 		// emailは正しいフォーマットか？
 		if(!regex.test(fields.email)){
 			valid = false
@@ -56,18 +34,29 @@
 		}
 
 		if(valid){
-			handleLogin()
+			console.log('valid=',valid)
+			async function handleLogin() {
+        const json = await post(fetch, 'http://localhost:1337/api/auth/local', {
+            identifier: email,
+            password
+        })
+        if(json.jwt) {
+					console.log(json.jwt)
+					browserSet("jwt", json.jwt)
+        }
+    	}
 		}
 	}
+
+
+
 </script>
 
 <div class="container">
 
 	<form on:submit|preventDefault={submitHandler}>
-
-		<h3 class="form__title">Login</h3>
-		
-		<p class="error">{not_found}</p>
+		<h3 class="form__title">Signup</h3>
+		<div class="form__message form__message--error"></div>
 
 		<!--email-->
 		<div class="form__input-group">
@@ -80,13 +69,13 @@
 				<input type="password" class="form__input" id="password" placeholder="Password" bind:value={fields.password}>
 				<div class="error">{ errors.password }</div>
 		</div>
-		<Button type="primary" >Login</Button>
+		<Button variant="unelevated" style="width:100%">Signup</Button>
 
 		<p class="form__text">
 				<a href="#" class="form__link">Forgot your password?</a>
 		</p>
 		<p>
-			<a href="/signup">Don't have an account? Create account</a>
+			<a href="/login">You have account? login</a>
 		</p>
 
 	</form>
