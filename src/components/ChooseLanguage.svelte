@@ -1,5 +1,6 @@
 <script>
     import { Menu, Button, List, ListItem } from 'svelte-materialify';
+    import { onMount } from 'svelte'
     export let langSelected = "ja";
     let langIcon = "/lang/jp.svg";
     const langs = [
@@ -16,8 +17,39 @@
             icon: "/lang/uk.svg"
         },
     ];
+    let userId = '';
+    onMount(async() => {
+        if (!localStorage.getItem('jwt')) return;
+        const res = await fetch('http://localhost:1337/api/user-info',{
+            method: 'GET',
+            headers: {
+                Authorization: 'Bearer ' + localStorage.getItem('jwt')
+            },
+        })
+        const json = await res.json();
+        userId = json.id
+        langSelected = json.LangCode;
+        langIcon =langs.find(x => x.code === langSelected).icon;
+    })
+    const changeUserLangCode = async (code) => {
+        if (!userId) return;
+        let headers = {}
+        headers["Authorization"] = 'Bearer ' + localStorage.getItem('jwt')
+
+        headers['Content-Type'] = 'application/json'
+        let res = await fetch("http://localhost:1337/api/users/"+userId, {
+                method: 'PUT',
+                body: JSON.stringify({
+                    LangCode: code
+                }),
+                headers
+            }
+        )
+        let json = await res.json();
+    }
     function handleClick(code) {
         langSelected = code;
+        changeUserLangCode(code);
         langIcon =langs.find(x => x.code === code).icon;
     }
   </script>
