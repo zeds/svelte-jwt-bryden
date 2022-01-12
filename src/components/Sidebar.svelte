@@ -1,4 +1,3 @@
-
 <script>
     import { fly } from 'svelte/transition';
     import {
@@ -55,6 +54,12 @@
                 <Icon path={mdiGavel} />
               </span>
               About
+            </ListItem>
+            <ListItem on:click={() => handleClick('login')}>
+              <span slot="prepend">
+                <Icon path={mdiGavel} />
+              </span>
+              Login
             </ListItem>
           </List>
 
