@@ -1,33 +1,85 @@
 <script>
+	import { post, browserSet } from '$lib/req_utils'
+	import { goto } from '$app/navigation';
 	import Button from '/src/shared/Button.svelte';
+
+	let fields = {
+		title: '',
+		fullName: '',
+		email: '',
+		phone: '',
+		contents: ''
+	}
+	let errors = {
+		title: '',
+		fullName: '',
+		email: '',
+		phone: '',
+		contents: ''
+	}
+	let valid = false
+
+
+	async function handleContact() {
+		const json = await post(fetch,'http://localhost:1337/api/contacts', {
+			data: {
+				title: fields.title,
+				fullName: fields.fullName,
+				email: fields.email,
+				phone: fields.phone,
+				contents: fields.contents
+			}
+		})
+		try {
+
+			console.log(json)
+		} catch(e) {
+			console.log(e.message)
+		}
+  }
+
+	const submitHandler = () => {
+		valid = true
+		console.log("submitHandler()")
+		console.log(fields)
+
+
+		if(valid){
+			handleContact()
+		}
+
+	}
+
+
+
 
 </script>
 
 
 <div class="body">
 <div class="wrapper">
-	<form>
+	<form on:submit|preventDefault={submitHandler}>
 		<h5>お問い合わせ</h5>
 		<div class="container">
 			<label class="custom-field one">
-				<input type="text" placeholder=" " required/>
-				<span class="placeholder">First Name</span>
+				<input type="text" placeholder=" " bind:value={fields.title} required/>
+				<span class="placeholder">Title</span>
 			</label>
 		
 			<label class="custom-field one">
-				<input type="text" placeholder=" " required/>
-				<span class="placeholder">Last Name</span>
+				<input type="text" placeholder=" " bind:value={fields.fullName} required/>
+				<span class="placeholder">Full Name</span>
 			</label>
 		</div>
 
 		<div class="container">
 			<label class="custom-field one">
-				<input type="email" placeholder=" " required/>
+				<input type="email" placeholder=" " bind:value={fields.email} required/>
 				<span class="placeholder">Email</span>
 			</label>
 		
 			<label class="custom-field one">
-				<input type="tel" placeholder=" "/>
+				<input type="tel" placeholder=" " bind:value={fields.phone} required/>
 				<span class="placeholder">Phone</span>
 			</label>
 		</div>
@@ -35,13 +87,15 @@
 		<div class="container">
 			<div class="box">
 				<label for="mes">コメントを入力してください</label>
-				<textarea id="mes" required></textarea>
+				<textarea id="mes" bind:value={fields.contents} required/>
 			</div>
 		</div>
 
 		<Button type="primary" >送信</Button>
 
 	</form>
+
+	
 </div>
 </div>
 
