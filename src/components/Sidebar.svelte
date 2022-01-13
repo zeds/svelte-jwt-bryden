@@ -1,5 +1,7 @@
 <script>
     import { fly } from 'svelte/transition';
+    
+    import { t } from '../lib/i18n'
     import {
         Button,
         List,
@@ -35,31 +37,31 @@
               <span slot="prepend">
                 <Icon path={mdiViewDashboard} />
               </span>
-              Home
+              {$t('sidebar.home')}
             </ListItem>
             <ListItem on:click={() => handleClick('profile')}>
               <span slot="prepend">
                 <Icon path={mdiAccountBox} />
               </span>
-              Profile
+              {$t('sidebar.profile')}
             </ListItem>
             <ListItem on:click={() => handleClick('admin')}>
               <span slot="prepend">
                 <Icon path={mdiGavel} />
               </span>
-              Admin
+              {$t('sidebar.admin')}
             </ListItem>
             <ListItem on:click={() => handleClick('about')}>
               <span slot="prepend">
                 <Icon path={mdiGavel} />
               </span>
-              About
+              {$t('sidebar.about')}
             </ListItem>
             <ListItem on:click={() => handleClick('login')}>
               <span slot="prepend">
                 <Icon path={mdiGavel} />
               </span>
-              Login
+              {$t('sidebar.login')}
             </ListItem>
           </List>
 
@@ -78,7 +80,7 @@ nav {
   border-left: 1px solid #aaa;
   background: #fff;
   overflow: hidden;
-  width: 200px;
+  width: 240px;
 }
 .close-button{
     width: 30px;

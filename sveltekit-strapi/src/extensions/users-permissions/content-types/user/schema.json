@@ -64,13 +64,17 @@
       "configurable": false
     },
     "Avatar": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
       "allowedTypes": [
         "images"
-      ],
-      "type": "media",
-      "multiple": false
+      ]
     },
     "LangCode": {
+      "type": "string"
+    },
+    "testField": {
       "type": "string"
     }
   }

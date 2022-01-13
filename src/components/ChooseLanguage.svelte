@@ -1,6 +1,9 @@
 <script>
     import { Menu, Button, List, ListItem } from 'svelte-materialify';
     import { onMount } from 'svelte'
+    import translations from '../multi_langs/translations'
+    import { locale, dict } from '../lib/i18n'
+    $: dict.set(translations);
     export let langSelected = "ja";
     let langIcon = "/lang/jp.svg";
     const langs = [
@@ -29,6 +32,7 @@
         const json = await res.json();
         userId = json.id
         langSelected = json.LangCode;
+        $locale=langSelected;
         langIcon =langs.find(x => x.code === langSelected).icon;
     })
     const changeUserLangCode = async (code) => {
@@ -49,9 +53,11 @@
     }
     function handleClick(code) {
         langSelected = code;
+        $locale=langSelected;
         changeUserLangCode(code);
         langIcon =langs.find(x => x.code === code).icon;
     }
+    
   </script>
 <div style="min-width: 60px;">
     <Menu>
@@ -93,7 +99,7 @@
           padding: 0px !important;
       }
       .lang-item {
-          width: 67px;
+         width: 67px;
           text-align: center;
       }
       .lang-item-img {
