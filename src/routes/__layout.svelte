@@ -66,6 +66,12 @@
           </span>
           Contact
         </ListItem>
+        <ListItem on:click={() => handleClick('toast')}>
+          <span slot="prepend">
+            <Icon path={mdiGavel} />
+          </span>
+          Toast
+        </ListItem>
         <ListItem on:click={() => handleClick('admin')}>
           <span slot="prepend">
             <Icon path={mdiGavel} />

@@ -3,6 +3,7 @@
 	import { goto } from '$app/navigation';
 	import Button from '/src/shared/Button.svelte';
 
+
 	let fields = {
 		title: '',
 		fullName: '',
