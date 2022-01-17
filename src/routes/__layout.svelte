@@ -29,9 +29,10 @@
   function toggleNavigationRight() {
     activeRight = !activeRight;
   }
+  let theme = 'light';
 </script>
 
-<MaterialApp>
+<MaterialApp {theme}>
 <div style="position:relative;height:52px">
   <AppBar>
     <div slot="icon">
@@ -89,9 +90,10 @@
   <Overlay {active} absolute on:click={toggleNavigation} index={1} />
 </div>
 <Sidebar bind:active={activeRight} />
+<slot />
 </MaterialApp>
 
-<slot />
+
 
 <style>
   /* These classes are only needed because the

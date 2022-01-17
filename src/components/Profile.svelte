@@ -1,14 +1,16 @@
 <script>
     import { scale } from 'svelte/transition';
-    import { Row, Col, TextField, Button, Card, Alert, Icon  } from 'svelte-materialify';
-    import { mdiCheck, mdiImageEdit  } from '@mdi/js';
+    import { Row, Col, TextField, Button, Alert, Icon,  Select, Textarea    } from 'svelte-materialify';
+    import { mdiCheck } from '@mdi/js';
+    import { Datefield } from 'svelte-mui';
+    import { locale, t } from '../lib/i18n'
     import { onMount } from 'svelte'
-    let userName = '';
-    let email = '';
+    let profile = {};
     let preview = null;
-    let userId = '';
     let imageEdit = false;
     let alert = false;
+    let fieldChanges = [];
+    let dateOfBirth = new Date();
     onMount(async() => {
         console.log("jwt local:", localStorage.getItem('jwt'))
         const res = await fetch('http://localhost:1337/api/user-info',{
@@ -17,71 +19,123 @@
                 Authorization: 'Bearer ' + localStorage.getItem('jwt')
             },
         })
-        const json = await res.json();
-        console.log("json data:", json)
-        userName = json.username
-        email = json.email
-        userId = json.id
-        preview = "http://localhost:1337" + json.Avatar.url
+        profile = await res.json();
+        var dateOfBirthNode = document.getElementById("dateOfBirth");
+        dateOfBirthNode.value = profile.dateOfBirth.toString();
+        console.log("d:", new Date());
+        console.log("date of Birth:", dateOfBirth);
+        console.log("json data:", profile)
+        preview = "http://localhost:1337" + profile.avatar.url
+        fieldChanges = [];
     })
     function onClick()
     {
-        var element = document.getElementById("avatarChoose");
+        var element = document.getElementById("chooseAvatar");
         element.click();
     }
     function chooseFile() {
-        var element = document.getElementById("avatarChoose");
+        var element = document.getElementById("chooseAvatar");
         const [file] =  element.files;
         preview = URL.createObjectURL(file);
     }
     function sleep(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
-    const uploadImage = async (e) => {
-        e.preventDefault();
-        
-        const formData = new FormData()
-        var element = document.getElementById("avatarChoose");
-        formData.append('files', element.files[0])
-
-        var res = await fetch("http://localhost:1337/api/upload", {
-            method: 'POST',
-            body: formData,
-            headers: {
-                Authorization: 'Bearer ' + localStorage.getItem('jwt')
-            }
+    function cloneProfile() {
+        var data = {};
+        if (!fieldChanges ||  !fieldChanges.length || fieldChanges.length == 0) {
+            return data;
+        }
+        fieldChanges.forEach(function (item) {
+            data[item] = profile[item];
         });
-        var json = await res.json();
-        console.log("upaload res:", json)
-        const imageURL =  json[0].url
+        return data;
+    }
+    const saveProfile = async (e) => {
+        e.preventDefault();
+        console.log("profile:", profile);
+        var element = document.getElementById("chooseAvatar");
+        var data = cloneProfile();
+        console.log("data push to api:", data);
+        if (element && element.files && element.files.length > 0) {
+            const formData = new FormData();
+            formData.append('files', element.files[0])
+            var res = await fetch("http://localhost:1337/api/upload", {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    Authorization: 'Bearer ' + localStorage.getItem('jwt')
+                }
+            });
+            var json = await res.json();
+            profile.avatar = json[0];
+            data.avatar = json[0];
+            fieldChanges.push('avatar');
+            console.log("upaload res:", json)
+        }
+        if (!fieldChanges ||  !fieldChanges.length || fieldChanges.length == 0) return;//no change
+        fieldChanges = [];
         let headers = {}
         headers["Authorization"] = 'Bearer ' + localStorage.getItem('jwt')
 
         headers['Content-Type'] = 'application/json'
-        res = await fetch("http://localhost:1337/api/users/"+userId, {
+        res = await fetch("http://localhost:1337/api/users/"+profile.id, {
                 method: 'PUT',
-                body: JSON.stringify({
-                    Avatar: json[0]
-                }),
+                body: JSON.stringify(data),
                 headers
             }
         )
        json = await res.json();
+       
        alert = true;
        await sleep(2000);
        alert = false;
        console.log("dat:", json);
-}
-function handleMouseOver() {
-    if (!imageEdit) {
-        imageEdit = true;
     }
-}
-function handleMouseOut() {
-	if (imageEdit) {
-        imageEdit = false;
+    function handleMouseOver() {
+        if (!imageEdit) {
+            imageEdit = true;
+        }
     }
-}
+    function handleMouseOut() {
+        if (imageEdit) {
+            imageEdit = false;
+        }
+    }
+    function searchZipCode() {
+
+    }
+    function textInputChange(e) {
+        const name = e.target.name;
+        if (!name) return;
+        if (!fieldChanges.includes(name)) {
+            fieldChanges.push(name);
+        }
+        profile[e.target.name] = e.target.value;
+    }
+    let format = 'YYYY-MM-DD';
+    function formatDate(date) {
+        var d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+        if (month.length < 2) 
+            month = '0' + month;
+        if (day.length < 2) 
+            day = '0' + day;
+        return [year, month, day].join('-');
+    }
+    const dateOfBirthChange = ({ detail }) => {
+        console.log('onchange', detail);
+        profile.dateOfBirth = formatDate(detail);
+        fieldChanges.push('dateOfBirth');
+    };
+    function genderChange() {
+        fieldChanges.push('gender');
+    }
+    function countryChange() {
+        fieldChanges.push('country');
+    }
 </script>
 <Alert dense class="success-color" transition={scale}
 transitionOpts={{ duration: 500 }}
@@ -91,26 +145,79 @@ bind:visible={alert}>
     </div>
     Update success
   </Alert>
-<input id="avatarChoose" type="file" name="Avatar" on:change={chooseFile}  style="display:none" />
-<div class="d-flex justify-center mt-4 mb-4">
-    <div style="max-width:352px;border: 1px solid black;">
-<Row>
-    <Col>
-        <div style="max-width:350px;position: relative;" >
-            <!-- svelte-ignore a11y-mouse-events-have-key-events -->
-            <img style="width:350px;height:350px;display: block;" src={preview} alt="" on:click={onClick} on:mouseover={handleMouseOver} on:mouseout={handleMouseOut} />
-            {#if imageEdit}
-            <Icon path={mdiImageEdit} style="position: absolute;;padding: 0px; bottom:0; left:0;" />
-            {/if}
-          </div>
+<input id="chooseAvatar" type="file" name="Avatar" on:change={chooseFile}  style="display:none" />
+
+<Row noGutters>
+    <Col cols={12} sm={6} md={3}>
+        <div class="pa-2">
+            <div class="profile-image">
+                    <div>{$t('profile.image')}</div>
+                    <!-- svelte-ignore a11y-mouse-events-have-key-events -->
+                    <img class="avatar" src={preview} alt="" on:click={onClick} on:mouseover={handleMouseOver} on:mouseout={handleMouseOut} />
+            </div>
+        </div>
     </Col>
-    <Col>
-        <TextField placeholder="User Name" value={userName}>User Name</TextField>
-        <TextField placeholder="Email" value={email}>Email</TextField>
-        <div class="d-flex justify-center">
-            <Button on:click={uploadImage}>Save</Button>
+    <Col cols={12} sm={6} md={9}>
+        <div class="pa-2">
+            <div class="input-item">
+                <TextField name="firstName" placeholder={$t('profile.firstName')} value={profile.firstName} on:change={textInputChange}>{$t('profile.firstName')}</TextField>
+            </div>
+            <div class="input-item">
+            <TextField name="lastName" placeholder={$t('profile.lastName')} value={profile.lastName} on:change={textInputChange}>{$t('profile.lastName')}</TextField>
+        </div>
+        <div class="input-item">
+            <Select bind:value={profile.gender} on:change={genderChange} items={$t('profile.genderList')} >{$t('profile.gender')}</Select>
+        </div>
+        <div class="input-item">
+            <Datefield id="dateOfBirth"
+                value={dateOfBirth}
+                label={$t('profile.dateOfBirth')}
+                format={format} locale={$locale}
+                on:date-change={dateOfBirthChange}
+                readonly={false}
+            />
+        </div>
+        <div class="input-item">
+            <Select bind:value={profile.country} on:change={countryChange} items={$t('profile.countryList')}>{$t('profile.country')}</Select>
+        </div>
+        <div class="input-item">
+            <Row>
+                <Col><TextField name="zipCode" placeholder={$t('profile.zipCode')} value={profile.zipCode} on:change={textInputChange}>{$t('profile.zipCode')}</TextField></Col>
+                <Col style="max-width:120px;"><Button class="blue white-text" on:click={searchZipCode}>{$t('profile.btnSearch')}</Button></Col>
+            </Row>
+            
+        </div>
+        <div class="input-item">
+            <TextField name="state" placeholder={$t('profile.state')} value={profile.state} on:change={textInputChange}>{$t('profile.state')}</TextField>
+        </div>
+        <div class="input-item">
+            <TextField name="city" placeholder={$t('profile.city')} value={profile.city} on:change={textInputChange}>{$t('profile.city')}</TextField>
+        </div>
+        <div class="input-item">
+            <TextField name="address" placeholder={$t('profile.address')} value={profile.address} on:change={textInputChange}>{$t('profile.address')}</TextField>
+        </div>
+        <div class="input-item">
+            <TextField name="building" placeholder={$t('profile.building')} value={profile.building} on:change={textInputChange}>{$t('profile.building')}</TextField>
+        </div>
         </div>
     </Col>
   </Row>
-</div>
-</div>
+  <Row>
+      <Col>
+        <Textarea name="comment" solo placeholder={$t('profile.comment')} value={profile.comment} on:change={textInputChange} />
+        <div class="d-flex justify-center">
+            <Button class="blue white-text" on:click={saveProfile}>{$t('profile.btnSave')}</Button>
+        </div>
+    </Col>
+  </Row>
+<style>
+    .input-item {
+        margin-top:10px;
+    }
+    .profile-image {
+        max-width:240px;margin-left: auto; margin-right: auto;
+    }
+    .avatar {
+        width:240px;height:240px;display: block;
+    }
+</style>

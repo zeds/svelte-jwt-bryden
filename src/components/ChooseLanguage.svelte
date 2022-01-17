@@ -31,7 +31,7 @@
         })
         const json = await res.json();
         userId = json.id
-        langSelected = json.LangCode;
+        langSelected = json.langCode;
         $locale=langSelected;
         langIcon =langs.find(x => x.code === langSelected).icon;
     })
@@ -44,7 +44,7 @@
         let res = await fetch("http://localhost:1337/api/users/"+userId, {
                 method: 'PUT',
                 body: JSON.stringify({
-                    LangCode: code
+                    langCode: code
                 }),
                 headers
             }
