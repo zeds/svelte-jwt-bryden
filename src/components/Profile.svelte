@@ -11,9 +11,11 @@
     let alert = false;
     let fieldChanges = [];
     let dateOfBirth = new Date();
+    let domain = "http://localhost:1337";
+    let zipCodeSearch = "http://zipcloud.ibsnet.co.jp/api/search?zipcode=";
     onMount(async() => {
         console.log("jwt local:", localStorage.getItem('jwt'))
-        const res = await fetch('http://localhost:1337/api/user-info',{
+        const res = await fetch(domain+ '/api/user-info',{
             method: 'GET',
             headers: {
                 Authorization: 'Bearer ' + localStorage.getItem('jwt')
@@ -25,7 +27,7 @@
         console.log("d:", new Date());
         console.log("date of Birth:", dateOfBirth);
         console.log("json data:", profile)
-        preview = "http://localhost:1337" + profile.avatar.url
+        preview = domain + profile.avatar.url
         fieldChanges = [];
     })
     function onClick()
@@ -60,7 +62,7 @@
         if (element && element.files && element.files.length > 0) {
             const formData = new FormData();
             formData.append('files', element.files[0])
-            var res = await fetch("http://localhost:1337/api/upload", {
+            var res = await fetch(domain + "/api/upload", {
                 method: 'POST',
                 body: formData,
                 headers: {
@@ -79,7 +81,7 @@
         headers["Authorization"] = 'Bearer ' + localStorage.getItem('jwt')
 
         headers['Content-Type'] = 'application/json'
-        res = await fetch("http://localhost:1337/api/users/"+profile.id, {
+        res = await fetch(domain + "/api/users/"+profile.id, {
                 method: 'PUT',
                 body: JSON.stringify(data),
                 headers
@@ -102,8 +104,20 @@
             imageEdit = false;
         }
     }
-    function searchZipCode() {
-
+    const searchZipCode = async (e) => {
+        var zipCode = profile.zipCode;
+        const url = zipCodeSearch + zipCode;
+        const res = await fetch(url,{
+            method: 'GET'
+        })
+        const json = await res.json();
+        console.log("json:", json);
+        if (json.results && json.results.length > 0) {
+            profile.state = json.results[0].address1;
+            profile.city = json.results[0].address2 + json.results[0].address3;
+            fieldChanges.push('state');
+            fieldChanges.push('city');
+        }
     }
     function textInputChange(e) {
         const name = e.target.name;
