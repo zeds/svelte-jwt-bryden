@@ -3,8 +3,6 @@
   import { addToast } from "/src/stores";
 	import Button from '/src/shared/Button.svelte';
 
-
-
   let message = "Hello, World!";
   let types = ["success", "error", "info"];
   let type = "success";
@@ -14,6 +12,7 @@
 
 <Toasts />
 
+<div class="container">
 <form on:submit|preventDefault>
   <p>
     <label>
@@ -50,14 +49,25 @@
 
 </form>
 
+</div>
+
 <style>
-  :global(*) {
+  /*:global(*) {
     box-sizing: border-box;
-  }
+  }*/
+
+	.container {
+		margin-top: 0;
+		display: flex;
+		align-items: center;
+
+	}
+	
 
   form {
     border: 0 none;
-    margin-top: 15rem;
+    margin-top: 1rem;
     text-align: center;
+		height: 10hv;
   }
 </style>
