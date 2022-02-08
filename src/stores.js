@@ -12,7 +12,7 @@ export const addToast = (toast) => {
     id,
     type: "info",
     dismissible: true,
-    timeout: 3000,
+    timeout: 1000,
   };
 
   // Push the toast to the top of the list of toasts

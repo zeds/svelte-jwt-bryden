@@ -19,11 +19,9 @@
 </script>
 
 <div class="container">
-	
-	
 	<form>
-		<h2>name:{name}</h2>
-		<h2>email:{email}</h2>
+		<h3>name:{name}</h3>
+		<h3>email:{email}</h3>
 		{JSON.stringify(json_obj)}
 	</form>
 </div>

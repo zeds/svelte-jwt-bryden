@@ -9,7 +9,7 @@
     NavigationDrawer,
     Overlay,
     MaterialApp } from 'svelte-materialify';
-  import { mdiMenu,mdiPen,mdiViewDashboard,mdiAccountBox,mdiGavel,mdiLogin } from '@mdi/js';
+  import { mdiMenu,mdiPen,mdiViewDashboard,mdiAccountBox,mdiGavel,mdiLogin,mdiFood } from '@mdi/js';
   // import Button from '@smui/button'
   // import List, { Item, Graphic, Separator, Text, Subheader } from '@smui/list';
   import { Item, Graphic, Separator, Text, Subheader } from '@smui/list';
@@ -66,6 +66,13 @@
           </span>
           Contact
         </ListItem>
+        <ListItem on:click={() => handleClick('restaurant')}>
+          <span slot="prepend">
+            <Icon path={mdiFood} />
+          </span>
+          Restaurant
+        </ListItem>
+
         <ListItem on:click={() => handleClick('toast')}>
           <span slot="prepend">
             <Icon path={mdiGavel} />
