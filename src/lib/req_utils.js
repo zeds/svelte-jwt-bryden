@@ -29,8 +29,8 @@ export async function post(fetch, url, body) {
     if(token) {
       headers['Authorization'] = 'Bearer ' + token
     }
-    console.log(url)
-    console.log(token)
+    console.log('url=',url)
+    console.log('token=',token)
     const res = await fetch(url, {
       method: 'POST',
       body,

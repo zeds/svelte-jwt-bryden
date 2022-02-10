@@ -24,6 +24,7 @@
     "@smui/button": "^6.0.0-beta.11",
     "@smui/list": "^6.0.0-beta.12",
     "@smui/top-app-bar": "^6.0.0-beta.11",
+    "dotenv": "^16.0.0",
     "socket.io": "^4.4.1",
     "socket.io-client": "^4.4.1",
     "svelte-confetti-explosion": "^0.2.0",

@@ -7,7 +7,8 @@ const config = {
 		adapter: adapter(),
 
 		// hydrate the <div id="svelte"> element in src/app.html
-		target: '#svelte',
+//config.kit.target is no longer required, and should be removed
+    //target: '#svelte',
 
     vite: {
       build: {
