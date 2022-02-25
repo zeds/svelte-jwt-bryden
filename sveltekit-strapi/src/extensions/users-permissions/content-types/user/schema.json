@@ -63,7 +63,7 @@
       "inversedBy": "users",
       "configurable": false
     },
-    "uploadImage": {
+    "avatar": {
       "type": "media",
       "multiple": false,
       "required": true,

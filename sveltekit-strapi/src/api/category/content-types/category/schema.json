@@ -4,7 +4,7 @@
   "info": {
     "singularName": "category",
     "pluralName": "categories",
-    "displayName": "category",
+    "displayName": "Category",
     "description": ""
   },
   "options": {
@@ -12,15 +12,15 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "categoryname": {
+    "name": {
       "type": "string",
       "unique": true
     },
-    "blogs": {
+    "restaurants": {
       "type": "relation",
       "relation": "manyToMany",
-      "target": "api::blog.blog",
-      "inversedBy": "categories"
+      "target": "api::restaurant.restaurant",
+      "mappedBy": "categories"
     }
   }
 }
