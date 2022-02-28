@@ -7,7 +7,7 @@
 	let fields = { email: '', password: '' }
 	//なにも表示しない状態から、エラーを表示すると、みずらいのでスペースを挿入した
 	let errors = { email: '', password: '' }
-	let not_found = 'email, passwordを入力してください'
+	let not_found = ""
 	let valid = false
 
 	//メールアドレス

@@ -37,7 +37,11 @@ module.exports = {
     //array.push(obj1)
     //array.push(obj2)
 
-    ctx.body = entries_from.concat(entries_to);
+
+    let data = entries_from.concat(entries_to);
+    ctx.body = data.sort(function(a,b) {
+      return (a.publishedAt < b.publishedAt) ? 1 : -1;  //オブジェクトの降順ソート
+    })
     //ctx.body = env('MAILGUN_API_KEY')
 
 

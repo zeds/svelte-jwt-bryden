@@ -7,7 +7,7 @@ import dotenv from 'dotenv';
 
 </script>
 
-<h3>Homepage</h3>
+<h3>Homepage!</h3>
 <p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
 
 <!--<h4>HOST:{import.meta.env.HOST}</h4>-->
