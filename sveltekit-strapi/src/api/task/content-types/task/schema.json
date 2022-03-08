@@ -1,0 +1,27 @@
+{
+  "kind": "collectionType",
+  "collectionName": "tasks",
+  "info": {
+    "singularName": "task",
+    "pluralName": "tasks",
+    "displayName": "Task"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "shift": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::shift.shift",
+      "inversedBy": "tasks"
+    }
+  }
+}

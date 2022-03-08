@@ -1,0 +1,25 @@
+{
+  "kind": "collectionType",
+  "collectionName": "positions",
+  "info": {
+    "singularName": "position",
+    "pluralName": "positions",
+    "displayName": "Position",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "staffs": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::staff.staff",
+      "inversedBy": "positions"
+    }
+  }
+}

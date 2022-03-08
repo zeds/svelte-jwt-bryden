@@ -45,6 +45,12 @@
     "avgPrice": {
       "type": "decimal",
       "default": 0
+    },
+    "staffs": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::staff.staff",
+      "mappedBy": "restaurants"
     }
   }
 }

@@ -1,0 +1,30 @@
+{
+  "kind": "collectionType",
+  "collectionName": "guests",
+  "info": {
+    "singularName": "guest",
+    "pluralName": "guests",
+    "displayName": "Guest"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "email": {
+      "type": "email"
+    },
+    "note": {
+      "type": "string"
+    },
+    "bookings": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::booking.booking",
+      "mappedBy": "guests"
+    }
+  }
+}

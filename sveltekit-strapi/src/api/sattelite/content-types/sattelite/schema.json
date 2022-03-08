@@ -1,0 +1,25 @@
+{
+  "kind": "collectionType",
+  "collectionName": "sattelites",
+  "info": {
+    "singularName": "sattelite",
+    "pluralName": "sattelites",
+    "displayName": "Satellite",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "rooms": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::room.room",
+      "mappedBy": "satellite"
+    }
+  }
+}

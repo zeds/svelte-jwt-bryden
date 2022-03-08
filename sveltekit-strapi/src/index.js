@@ -17,6 +17,7 @@ module.exports = {
 
     io.on('connection', function(socket) {
       console.log("Connection established!");
+      console.log("socket.id=",socket.id)
       socket.on('join', (message,username) => {
         console.log('chat message =',message,username);
 

@@ -1,0 +1,64 @@
+{
+  "kind": "collectionType",
+  "collectionName": "rooms",
+  "info": {
+    "singularName": "room",
+    "pluralName": "rooms",
+    "displayName": "Room",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "address": {
+      "type": "string"
+    },
+    "room_status": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::room-status.room-status",
+      "inversedBy": "rooms"
+    },
+    "capacity": {
+      "type": "integer"
+    },
+    "staffs": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::staff.staff",
+      "inversedBy": "rooms"
+    },
+    "description": {
+      "type": "string"
+    },
+    "note": {
+      "type": "string"
+    },
+    "checkinFrom": {
+      "type": "time"
+    },
+    "checkoutBefore": {
+      "type": "time"
+    },
+    "checkinUntil": {
+      "type": "time"
+    },
+    "satellite": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::sattelite.sattelite",
+      "inversedBy": "rooms"
+    },
+    "bookings": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::booking.booking",
+      "mappedBy": "rooms"
+    }
+  }
+}

@@ -2,9 +2,9 @@
 module.exports = ({ env }) => ({
 
   // ...
-  'hello-v4': {
+  'import-csv': {
     enabled: true,
-    resolve: './src/plugins/hello-v4'
+    resolve: './src/plugins/import-csv'
   },
   email: {
     config: {
